@@ -1,4 +1,4 @@
-import {expect, describe, it, vi, beforeEach, afterAll} from "vitest";
+import {afterAll, beforeEach, describe, expect, it, vi} from "vitest";
 import {Decimal} from "@prisma/client/runtime/binary";
 
 import {CheckInUseCase} from "@/use-cases/check-in";

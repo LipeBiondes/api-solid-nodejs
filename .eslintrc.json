@@ -1,5 +1,10 @@
 {
   "rules": {
     "no-useless-constructor": "off"
-  }
+  },
+  "ignorePatterns": [
+    "node_modules",
+    "build",
+    "vite*"
+  ]
 }
