@@ -3,6 +3,8 @@ import {CheckInsRepository} from '@/repositories/check-ins-repository'
 import {GymsRepository} from '@/repositories/gyms-repository'
 import {ResourceNotFoundError} from '@/use-cases/errors/resource-not-found-error'
 import {getDistanceBetweenCoordinates} from "@/utils/get-distance-between-coordinates";
+import {MaxDistanceError} from "@/use-cases/errors/max-distance-error";
+import {MaxNumberOfCheckInsError} from "@/use-cases/errors/max-number-of-check-ins.error";
 
 interface CheckInUseCaseRequest {
     userId: string
@@ -27,17 +29,18 @@ export class CheckInUseCase {
                       gymId,
                       userLatitude,
                       userLongitude,
-                  }: CheckInUseCaseRequest): Promise<AuthenticateUserCaseResponse> {
-        const gym = await this.gymsRepository.findById(gymId)
+                  }: CheckInUseCaseRequest)
+        : Promise<AuthenticateUserCaseResponse> {
+        const gym = await this.gymsRepository.findById(gymId);
 
         if (!gym) {
-            throw new ResourceNotFoundError()
+            throw new ResourceNotFoundError();
         }
 
         const distance = getDistanceBetweenCoordinates(
             {
                 latitude: userLatitude,
-                longitude: userLongitude
+                longitude: userLongitude,
             },
             {
                 latitude: gym.latitude.toNumber(),
@@ -48,25 +51,25 @@ export class CheckInUseCase {
         const MAX_DISTANCE_IN_KILOMETERS = 0.1;
 
         if (distance > MAX_DISTANCE_IN_KILOMETERS) {
-            throw new Error();
+            throw new MaxDistanceError();
         }
 
         const checkInOnSameDay = await this.checkInsRepository.findByUserIdOnDate(
             userId,
-            new Date()
+            new Date(),
         )
 
         if (checkInOnSameDay) {
-            throw new Error()
+            throw new MaxNumberOfCheckInsError();
         }
 
         const checkIn = await this.checkInsRepository.create({
             user_id: userId,
-            gym_id: gymId
+            gym_id: gymId,
         })
 
         return {
-            checkIn
+            checkIn,
         }
     }
 }
