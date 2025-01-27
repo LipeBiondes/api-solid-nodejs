@@ -1,5 +1,5 @@
 import {prisma} from "@/lib/prisma.js";
-import {Prisma} from "@prisma/client";
+import {Prisma, User} from "@prisma/client";
 
 import {UsersRepository} from "@/repositories/users-repository.js";
 
@@ -12,5 +12,9 @@ export class PrismaUsersRepository implements UsersRepository {
 
     async findByEmail(email: string) {
         return prisma.user.findUnique({where: {email}});
+    }
+
+    findById(userId: string): Promise<User | null> {
+        return prisma.user.findUnique({where: {id: userId}});
     }
 }
