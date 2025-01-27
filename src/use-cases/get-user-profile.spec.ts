@@ -14,7 +14,7 @@ describe('Get Use Profile Use Case', () => {
         sut = new GetUserProfileUseCase(usersRepository);
     })
 
-    it('should be able to get user profile', async () => {
+    it('Should be able to get user profile', async () => {
         const createdUser = await usersRepository.create({
             name: "John Doe",
             email: "john@example.com",
@@ -29,7 +29,7 @@ describe('Get Use Profile Use Case', () => {
         expect(user.name).toEqual("John Doe");
     });
 
-    it('should not be able to get user profile wrong id', async () => {
+    it('Should not be able to get user profile wrong id', async () => {
         await expect(() => sut.execute({
             userId: "no-existing-id",
         })).rejects.toBeInstanceOf(ResourceNotFoundError);

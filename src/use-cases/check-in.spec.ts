@@ -33,7 +33,7 @@ describe('Check-In Use Case', () => {
         vi.useRealTimers();
     })
 
-    it('should be able to check in', async () => {
+    it('Should be able to check in', async () => {
         const {checkIn} = await sut.execute({
             gymId: "gym-id-01",
             userId: "user-id-01",
@@ -44,7 +44,7 @@ describe('Check-In Use Case', () => {
         expect(checkIn.id).toEqual(expect.any(String));
     });
 
-    it('should not be able to check in twice the same day', async () => {
+    it('Should not be able to check in twice the same day', async () => {
         vi.setSystemTime(new Date(2025, 0, 10, 8, 0, 0));
 
         await sut.execute({
@@ -62,7 +62,7 @@ describe('Check-In Use Case', () => {
         })).rejects.toBeInstanceOf(MaxNumberOfCheckInsError);
     });
 
-    it('should not be able to check in twice but in different days', async () => {
+    it('Should not be able to check in twice but in different days', async () => {
         vi.setSystemTime(new Date(2025, 0, 10, 8, 0, 0));
 
         await sut.execute({
@@ -84,7 +84,7 @@ describe('Check-In Use Case', () => {
         expect(checkIn.id).toEqual(expect.any(String));
     });
 
-    it('should not be able to check in on distant gym', async () => {
+    it('Should not be able to check in on distant gym', async () => {
         gymsRepository.items.push({
             id: "gym-id-02",
             title: "javascript-gym",

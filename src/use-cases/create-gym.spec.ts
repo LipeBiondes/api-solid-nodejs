@@ -13,7 +13,7 @@ describe('Register Use Case', () => {
         sut = new CreateGymUseCase(gymsRepository);
     })
 
-    it('should be able to create gym', async () => {
+    it('Should be able to create gym', async () => {
         const {gym} = await sut.execute({
             title: "Academia do javascript",
             description: null,
