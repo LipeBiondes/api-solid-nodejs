@@ -4,4 +4,6 @@ export interface GymsRepository {
     findById(id: string): Promise<Gym | null>;
 
     create(data: Prisma.GymCreateInput): Promise<Gym>;
+
+    searchMany(id: string, page: number): Promise<Gym[]>;
 }
