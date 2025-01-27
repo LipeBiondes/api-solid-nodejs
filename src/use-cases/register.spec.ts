@@ -9,7 +9,6 @@ let usersRepository: InMemoryUsersRepository;
 let sut: RegisterUseCase;
 
 describe('Register Use Case', () => {
-    // Antes de cada teste faça =>
     beforeEach(() => {
         usersRepository = new InMemoryUsersRepository();
         sut = new RegisterUseCase(usersRepository);
