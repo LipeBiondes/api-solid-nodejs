@@ -1,42 +1,45 @@
-import {FindManyNearbyParams, GymsRepository} from "@/repositories/gyms-repository";
-import {Gym, Prisma} from "@prisma/client";
-import {prisma} from "@/lib/prisma";
+import {
+  FindManyNearbyParams,
+  GymsRepository,
+} from '@/repositories/gyms-repository';
+import { Gym, Prisma } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 
 export class PrismaGymsRepository implements GymsRepository {
-    async findById(id: string) {
-        const gym = await prisma.gym.findUnique({
-            where: {
-                id,
-            }
-        })
+  async findById(id: string) {
+    const gym = await prisma.gym.findUnique({
+      where: {
+        id,
+      },
+    });
 
-        return gym;
-    }
+    return gym;
+  }
 
-    async create(data: Prisma.GymCreateInput) {
-        const gym = await prisma.gym.create({
-            data,
-        })
+  async create(data: Prisma.GymCreateInput) {
+    const gym = await prisma.gym.create({
+      data,
+    });
 
-        return gym;
-    }
+    return gym;
+  }
 
-    async searchMany(query: string, page: number) {
-        const gyms = await prisma.gym.findMany({
-            where: {
-                title: {
-                    contains: query,
-                },
-            },
-            take: 20,
-            skip: (page - 1) * 20,
-        });
+  async searchMany(query: string, page: number) {
+    const gyms = await prisma.gym.findMany({
+      where: {
+        title: {
+          contains: query,
+        },
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    });
 
-        return gyms;
-    }
+    return gyms;
+  }
 
-    async FindManyNearby({latitude, longitude}: FindManyNearbyParams) {
-        const gyms = await prisma.$queryRaw<Gym[]>`
+  async FindManyNearby({ latitude, longitude }: FindManyNearbyParams) {
+    const gyms = await prisma.$queryRaw<Gym[]>`
             SELECT *
             FROM gyms
             WHERE 6371 * 2 * ASIN(SQRT(
@@ -46,7 +49,6 @@ export class PrismaGymsRepository implements GymsRepository {
                                   )) <= 10
         `;
 
-        return gyms;
-    }
-
+    return gyms;
+  }
 }
